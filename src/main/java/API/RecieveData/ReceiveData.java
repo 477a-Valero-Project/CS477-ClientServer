@@ -1,11 +1,10 @@
-package RecieveData;
+package API.RecieveData;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.ext.fileupload.RestletFileUpload;
-import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
@@ -69,6 +68,7 @@ public class ReceiveData extends ServerResource {
                     if (fi.getFieldName().equals("fileToUpload")) {
                         found = true;
                         File file = new File(fileName);
+                        System.out.println(fi.getContentType());
                         fi.write(file);
                     } else if (fi.getFieldName().equals("owner")) {
                         owner = true;

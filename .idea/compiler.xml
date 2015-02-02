@@ -25,6 +25,9 @@
         <module name="CS477 ClientServer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="CS477 ClientServer" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 
