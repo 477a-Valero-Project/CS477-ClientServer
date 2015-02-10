@@ -1,9 +1,11 @@
 package API;
 
 import API.ApiRouting;
+import Logic.Database.ConfigurationManager;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.ext.oauth.GrantType;
 import org.restlet.resource.ServerResource;
 
 /**
@@ -16,6 +18,7 @@ public class App extends ServerResource {
         Component component = new Component();
         Server server = component.getServers().add(Protocol.HTTP, 8182);
         server.getContext().getParameters().add("useForwardedForHeader", "true");
+        ConfigurationManager.init();
         component.getDefaultHost().attach(new ApiRouting());
         component.start();
     }

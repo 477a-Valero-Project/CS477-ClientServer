@@ -32,5 +32,36 @@
                 ></addAutoIncrement>
 
     </changeSet>
+    <changeSet id="0.0.2" author="Martin Borstad">
+        <createTable tableName="Doctors">
+            <column name="doctorId" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                tableName="Doctors"
+                columnDataType="int"
+                columnName="doctorId"
+                incrementBy="1"
+                ></addAutoIncrement>
+        <createTable tableName="Patients">
+            <column name="patientId" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                tableName="Patients"
+                columnDataType="int"
+                columnName="patientId"
+                incrementBy="1"
+                ></addAutoIncrement>
+
+    </changeSet>
 
 </databaseChangeLog>

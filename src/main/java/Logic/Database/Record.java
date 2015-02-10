@@ -21,9 +21,8 @@ public class Record {
 
     public Record(){}
 
-    public Record(int nRecordId, int nPatientId, int nDoctorId, String nRawPath, String nFilePathProcess)
+    public Record(int nPatientId, int nDoctorId, String nRawPath, String nFilePathProcess)
     {
-        recordId = nRecordId;
         patientId = nPatientId;
         doctorId = nDoctorId;
         filePathRaw = nRawPath;
@@ -75,28 +74,5 @@ public class Record {
     {
         return "record id: " + recordId + " patient id: " + patientId + " doctor id: " + doctorId
                 + " path1 " + filePathRaw + " path2 " + filePathProcess;
-    }
-
-    public static void main(String args[])
-    {
-        //Record r = new Record(-1, 1, 0, "hello", "world");
-        Record r = null;
-        Configuration cfg = new Configuration().configure(new File("src/main/java/Logic/Resources/hibernate.cfg.xml"))
-                .addDirectory(new File("src/main/java/Logic/Resources/entities"));
-        SessionFactory factory = cfg.buildSessionFactory();
-        Session session = factory.openSession();
-        Transaction tx = session.beginTransaction();
-        //session.save(r);
-        List records = session.createQuery("FROM Record").list();
-        for(Iterator iterator = records.iterator(); iterator.hasNext();)
-        {
-            r = (Record)iterator.next();
-            System.out.println(r);
-        }
-        tx.commit();
-
-
-        session.close();
-
     }
 }

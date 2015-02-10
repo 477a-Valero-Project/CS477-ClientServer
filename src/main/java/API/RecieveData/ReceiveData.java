@@ -26,6 +26,14 @@ public class ReceiveData extends ServerResource {
         return "this page is where you send files";
     }
 
+    /**
+     * Goal for method: accept file via post
+     *                  send back id
+     *                  start process to process data
+     * @param entity
+     * @return
+     * @throws Exception
+     */
     @Post
     public Object accept(Representation entity) throws Exception
     {
