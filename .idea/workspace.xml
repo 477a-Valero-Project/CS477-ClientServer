@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="96f47b7a-e7d7-4034-a484-2254b07a7c17" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/API/ApiRouting.java" afterPath="$PROJECT_DIR$/src/main/java/API/ApiRouting.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/API/App.java" afterPath="$PROJECT_DIR$/src/main/java/API/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CS477 ClientServer.iml" afterPath="$PROJECT_DIR$/CS477 ClientServer.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Logic/Database/Database.java" afterPath="$PROJECT_DIR$/src/main/java/Logic/Database/Database.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/API/RecieveData/ReceiveData.java" afterPath="$PROJECT_DIR$/src/main/java/API/RecieveData/ReceiveData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Logic/Resources/liquibase/db.changelog-0.0.1.xml" afterPath="$PROJECT_DIR$/src/main/java/Logic/Resources/liquibase/db.changelog-0.0.1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+    <list default="true" id="96f47b7a-e7d7-4034-a484-2254b07a7c17" name="Default" comment="added oauth to api">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/AbstractRequestsFootprintCache.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/Testing/Client.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/DummyAPIProvider.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/LocalRequestsFootprintCache.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Logic/Resources/entities/OAuthCache.hbm.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/Logic/Database/OAuthCache.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/OAuthProtectedResource.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/OAuthRequestValidator.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/API/Resources.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="6a3bf245-162a-4e5c-831f-18d87df13b6b" name="Rejected commit: Default" comment="added a bunch of functionality for the database and tested adding a file to it and listing it out" />
@@ -65,15 +68,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OAuthProtectedResource.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OAuthProtectedResource.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/API/OAuthProtectedResource.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37096775" vertical-offset="541" max-vertical-offset="1479">
-              <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="847" max-vertical-offset="1479">
+              <caret line="68" column="31" selection-start-line="68" selection-start-column="31" selection-end-line="68" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#doHandle#0;class#OAuthProtectedResource#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dependency-reduced-pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.33333334" vertical-offset="870" max-vertical-offset="1445">
+              <caret line="61" column="28" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -145,16 +158,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ApiRouting.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/API/ApiRouting.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-              <caret line="25" column="31" selection-start-line="25" selection-start-column="24" selection-end-line="25" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindManager">
@@ -203,6 +206,7 @@
         <option value="$PROJECT_DIR$/src/main/java/API/Testing/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/API/OAuthRequestValidator.java" />
         <option value="$PROJECT_DIR$/src/main/java/API/OAuthProtectedResource.java" />
+        <option value="$PROJECT_DIR$/dependency-reduced-pom.xml" />
       </list>
     </option>
   </component>
@@ -926,17 +930,23 @@
       <option name="project" value="LOCAL" />
       <updated>1423569847837</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added oauth to api">
+      <created>1423605116395</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1423605116395</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="280" y="85" width="1599" height="1001" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922733" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3930571" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3930571" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
@@ -977,7 +987,8 @@
     <MESSAGE value="first commit" />
     <MESSAGE value="added a bunch of functionality for the database and tested adding a file to it and listing it out" />
     <MESSAGE value="database should be fully done for basic level, working on implementing oauth using restlet" />
-    <option name="LAST_COMMIT_MESSAGE" value="database should be fully done for basic level, working on implementing oauth using restlet" />
+    <MESSAGE value="added oauth to api" />
+    <option name="LAST_COMMIT_MESSAGE" value="added oauth to api" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1133,14 +1144,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="272">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1445">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1612,16 +1615,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/API/Testing/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-          <caret line="17" column="65" selection-start-line="17" selection-start-column="65" selection-end-line="17" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/API/App.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="442">
@@ -1666,12 +1659,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/API/OAuthProtectedResource.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37096775" vertical-offset="541" max-vertical-offset="1479">
-          <caret line="51" column="67" selection-start-line="51" selection-start-column="67" selection-end-line="51" selection-end-column="67" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="847" max-vertical-offset="1479">
+          <caret line="68" column="31" selection-start-line="68" selection-start-column="31" selection-end-line="68" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#doHandle#0;class#OAuthProtectedResource#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/API/Testing/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+          <caret line="17" column="65" selection-start-line="17" selection-start-column="65" selection-end-line="17" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependency-reduced-pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="870" max-vertical-offset="1445">
+          <caret line="61" column="28" selection-start-line="61" selection-start-column="28" selection-end-line="61" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1740,7 +1751,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Maven: org.restlet.jse:org.restlet:2.2.2</last-edited>
+          <last-edited>Maven: antlr:antlr:2.7.7</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

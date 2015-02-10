@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Logic.Database">
+    <class name="OAuthCache" table="Auth">
+        <id name="authId" column="authId">
+            <generator class="native"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="string"></property>
+        <property name="nonce" column="nonce" type="string"></property>
+        <property name="publicKey" column="publicKey" type="string"></property>
+        <property name="accessed" column="accessed" type="timestamp"></property>
+    </class>
+</hibernate-mapping>
