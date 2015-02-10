@@ -1,5 +1,6 @@
 package API.RecieveData;
 
+import API.OAuthProtectedResource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.restlet.data.MediaType;
@@ -18,8 +19,12 @@ import java.util.List;
 /**
  * Created by Martin on 10/24/2014.
  */
-public class ReceiveData extends ServerResource {
+public class ReceiveData extends OAuthProtectedResource {
 
+    public String getSecretKey()
+    {
+        return "peanuts";
+    }
     @Get
     public Object getRes()
     {

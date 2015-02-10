@@ -3,12 +3,37 @@ package Logic.Database;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Martin on 10/25/2014.
  */
 public class Database {
+
+    /**
+     * Starts a loop to kill off old oauth entries.
+     * Plans it to run around once every 2.5 min
+     */
+    public static void init()
+    {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true)
+                {
+                    removeOldOAuth();
+                    try {
+                        Thread.sleep(150000);
+                    }
+                    catch(Exception e)
+                    {
+                        //doesn't really matter
+                    }
+                }
+            }
+        });
+    }
 
     /**
      * Update the processed location of file
@@ -29,6 +54,47 @@ public class Database {
         session.update(r);
         tx.commit();
         return true;
+    }
+
+    static synchronized public void removeOldOAuth()
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List l = session.createQuery("FROM OAuthCache").list();
+        //300000 ms = 5 minutes
+        Date curr = new Date(new Date().getTime() - 300000);
+        for(Object o : l)
+        {
+            OAuthCache cached = (OAuthCache)o;
+            if(cached.getAccessed().before(curr))
+            {
+                session.delete(cached);
+            }
+            else
+            {
+                break;
+            }
+        }
+        tx.commit();
+    }
+
+    static synchronized public boolean tryPutOAuth(String timestamp, String nonce, String publicKey)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List l = session.createQuery("FROM OAuthCache a WHERE a.timestamp='" + timestamp + "'").list();
+        for(Object o : l)
+        {
+            OAuthCache cached = (OAuthCache)o;
+            if(cached.getNonce().equals(nonce) && cached.getPublicKey().equals(publicKey))
+            {
+                return true;
+            }
+        }
+        OAuthCache o = new OAuthCache(timestamp, nonce, publicKey);
+        session.save(o);
+        tx.commit();
+        return false;
     }
 
     //Add file to database
@@ -106,12 +172,7 @@ public class Database {
      */
     public static void main(String args[])
     {
-        int recordId = makeRecord(1, 1, "nope");
-        Record r = getRecord(recordId);
-        System.out.println(r);
-        updateRecord(recordId, "test2");
-        r = getRecord(recordId);
-        System.out.println(r);
+        System.out.println(tryPutOAuth("a", "b", "d"));
 
         //System.out.println(getDoctor(1));
     }
