@@ -7,6 +7,7 @@ import org.scribe.oauth.OAuthService;
 
 /**
  * Created by Martin on 2/10/2015.
+ * For testing application.
  */
 public class Client {
     public static void main(String args[]) {
