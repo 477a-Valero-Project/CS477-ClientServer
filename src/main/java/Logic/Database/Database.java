@@ -122,6 +122,8 @@ public class Database {
         Transaction tx = session.beginTransaction();
         List list = session.createQuery("FROM Record r WHERE r.recordId=" + recordId).list();
         tx.commit();
+        if(list.size() == 0)
+            return null;
         return (Record)list.get(0);
     }
 
@@ -134,8 +136,8 @@ public class Database {
         return d.getDoctorId();
     }
 
-    static synchronized public int makePatient(String password) {
-        Patient d = new Patient(password);
+    static synchronized public int makePatient(String password, int doctorId) {
+        Patient d = new Patient(password, doctorId);
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.save(d);
@@ -148,7 +150,19 @@ public class Database {
         Transaction tx = session.beginTransaction();
         List list = session.createQuery("FROM Doctor d WHERE d.doctorId = " + id).list();
         tx.commit();
+        if(list.size() == 0)
+            return null;
         return (Doctor) list.get(0);
+    }
+
+    static synchronized public Patient getPatient(int id) {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List list = session.createQuery("FROM Patient p WHERE p.patientId = " + id).list();
+        tx.commit();
+        if(list.size() == 0)
+            return null;
+        return (Patient) list.get(0);
     }
 
     /**

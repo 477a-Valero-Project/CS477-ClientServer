@@ -21,6 +21,7 @@ public abstract class OAuthProtectedResource extends ServerResource {
     static final String VERSION_QUERY_PARAM = "oauth_version";
     static final String CONSUMER_KEY_QUERY_PARAM = "oauth_consumer_key";
     static final String SIGNATURE_QUERY_PARAM = "oauth_signature";
+    static final String ID = "ID";
 
     static final String SECRET_KEY_HEADER = "3scale-app-key";
 
@@ -55,7 +56,8 @@ public abstract class OAuthProtectedResource extends ServerResource {
                 !queryValues.containsKey(SIGNATURE_METHOD_QUERY_PARAM) ||
                 !queryValues.containsKey(VERSION_QUERY_PARAM) ||
                 !queryValues.containsKey(CONSUMER_KEY_QUERY_PARAM) ||
-                !queryValues.containsKey(SIGNATURE_QUERY_PARAM))
+                !queryValues.containsKey(SIGNATURE_QUERY_PARAM) ||
+                !queryValues.containsKey(ID))
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Missing OAuth credentials");
 
         // Validate the request
@@ -67,7 +69,7 @@ public abstract class OAuthProtectedResource extends ServerResource {
                 getQuery().getFirstValue(SIGNATURE_METHOD_QUERY_PARAM),
                 getQuery().getFirstValue(VERSION_QUERY_PARAM),
                 getAccessKey(),
-                getSecretKey(),
+                getSecretKey(getQuery().getFirstValue(ID)),
                 getQuery().getFirstValue(SIGNATURE_QUERY_PARAM));
 
         if (!isValid)
@@ -78,7 +80,7 @@ public abstract class OAuthProtectedResource extends ServerResource {
      * Extract the API secret key from the following request
      * @return the secret key of the request
      */
-    public abstract String getSecretKey();
+    public abstract String getSecretKey(String id);
 
     /**
      * Extract the API public key from the following request

@@ -13,9 +13,9 @@ public class Client {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("apples").apiSecret("peanuts")
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://127.0.0.1:8182/receive/");
-
+        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/receive/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
+        request.addQuerystringParameter("filename", "test");
         Response response = request.send();
         System.out.println(response.getBody());
     }

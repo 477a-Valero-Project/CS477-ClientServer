@@ -51,6 +51,9 @@
         <column name="patientId" type="int">
             <constraints primaryKey="true" nullable="false"/>
         </column>
+        <column name="doctorId" type="int">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
         <column name="password" type="varchar(255)">
             <constraints nullable="true"/>
         </column>

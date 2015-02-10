@@ -8,7 +8,7 @@
         <id name="patientId" column="patientId">
             <generator class="native"/>
         </id>
+        <property name="doctorId" column="doctorId" type="int" not-null="true"></property>
         <property name="password" column="password" type="string"></property>
-
     </class>
 </hibernate-mapping>

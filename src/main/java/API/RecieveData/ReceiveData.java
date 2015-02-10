@@ -1,6 +1,9 @@
 package API.RecieveData;
 
 import API.OAuthProtectedResource;
+import Logic.Database.Database;
+import Logic.Database.Patient;
+import Logic.Database.Users;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.restlet.data.MediaType;
@@ -15,15 +18,16 @@ import org.restlet.resource.ServerResource;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Martin on 10/24/2014.
  */
 public class ReceiveData extends OAuthProtectedResource {
 
-    public String getSecretKey()
+    public String getSecretKey(String id)
     {
-        return "peanuts";
+        return Users.getPassword(id);
     }
     @Get
     public Object getRes()
@@ -43,10 +47,17 @@ public class ReceiveData extends OAuthProtectedResource {
     public Object accept(Representation entity) throws Exception
     {
         Representation rep = null;
+        API.Status.StatusBuilder stats = new API.Status.StatusBuilder();
         if (entity != null) {
             if (MediaType.MULTIPART_FORM_DATA.equals(entity.getMediaType(),
                     true)) {
-                String fileName = "J:\\temp\\file.txt";
+                Map<String, String> map = getQuery().getValuesMap();
+                if(!map.containsKey("filename") || !map.containsKey("patientid"))
+                {
+                    stats.append("status", "bad");
+                    return stats.build().toString();
+                }
+                String fileName = "J:\\temp\\" + map.get("filename");
 
                 // The Apache FileUpload project parses HTTP requests which
                 // conform to RFC 1867, "Form-based File Upload in HTML". That
@@ -83,30 +94,27 @@ public class ReceiveData extends OAuthProtectedResource {
                         File file = new File(fileName);
                         System.out.println(fi.getContentType());
                         fi.write(file);
-                    } else if (fi.getFieldName().equals("owner")) {
-                        owner = true;
-                        System.out.println(fi.getString());
                     }
                 }
 
                 // Once handled, the content of the uploaded file is sent
                 // back to the client.
                 if (found) {
-                    // Create a new representation based on disk file.
-                    // The content is arbitrarily sent as plain text.
-                    rep = new StringRepresentation("file found",
-                            MediaType.TEXT_PLAIN);
+                    stats.append("status", "good");
+                    Patient p = Database.getPatient(Integer.valueOf(map.get("patientid")));
+                    int doctor = !map.containsKey("doctorid") ? p.getDoctorId() : Integer.valueOf(map.get("doctorid"));
+                    stats.append("fileid", String.valueOf(Database.makeRecord(doctor, p.getPatientId(), fileName)));
+                    return stats.build().toString();
                 } else {
-                    // Some problem occurs, sent back a simple line of text.
-                    rep = new StringRepresentation("no file uploaded",
-                            MediaType.TEXT_PLAIN);
+                    stats.append("status", "bad");
+                    return stats.build().toString();
                 }
             }
         } else {
-            // POST request with no entity.
-            setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
+            stats.append("status", "bad");
+            return stats.build().toString();
         }
-
-        return rep;
+        //should not reach here
+        return null;
     }
 }

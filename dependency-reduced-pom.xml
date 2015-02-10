@@ -19,14 +19,14 @@
         <version>2.1</version>
         <executions>
           <execution>
-            <recordId>shade-main</recordId>
+            <id>shade-main</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
           </execution>
           <execution>
-            <recordId>shade-redist</recordId>
+            <id>shade-redist</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>

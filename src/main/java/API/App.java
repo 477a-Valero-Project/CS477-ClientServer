@@ -1,12 +1,10 @@
 package API;
 
-import API.ApiRouting;
 import Logic.Database.ConfigurationManager;
 import Logic.Database.Database;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
-import org.restlet.ext.oauth.GrantType;
 import org.restlet.resource.ServerResource;
 
 /**

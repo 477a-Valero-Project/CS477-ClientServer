@@ -1,10 +1,5 @@
 package Logic.Database;
 
-import org.restlet.ext.oauth.internal.ClientManager;
-import org.restlet.ext.oauth.internal.TokenManager;
-import org.restlet.ext.oauth.internal.memory.MemoryClientManager;
-import org.restlet.ext.oauth.internal.memory.MemoryTokenManager;
-
 import java.util.Hashtable;
 import java.util.List;
 
@@ -13,16 +8,6 @@ import java.util.List;
  */
 public class Users {
     private static Hashtable<String, String> table;
-    private static ClientManager clientManager;
-    private static TokenManager tokenManager;
-
-    public static ClientManager getClientManager() {
-        return clientManager;
-    }
-
-    public static TokenManager getTokenManager() {
-        return tokenManager;
-    }
 
     public static void init()
     {
@@ -36,8 +21,6 @@ public class Users {
                 table.put(a.getId(), a.getPassword());
             }
         }
-        clientManager = new MemoryClientManager();
-        tokenManager = new MemoryTokenManager();
     }
 
     public static boolean validate(String id, String password)
@@ -48,5 +31,14 @@ public class Users {
         }
         String str = table.get(id);
         return str.equals(password);
+    }
+
+    public static String getPassword(String id)
+    {
+        if(table == null)
+        {
+            init();
+        }
+        return table.get(id);
     }
 }

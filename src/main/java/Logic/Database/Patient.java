@@ -6,17 +6,27 @@ package Logic.Database;
 public class Patient implements AuthenticationModule {
     private String key;
     private int patientId;
+    private int doctorId;
     private String password;
 
     public Patient() {}
-    public Patient(String nPassword)
+    public Patient(String nPassword, int nDoctorId)
     {
         password = nPassword;
+        doctorId = nDoctorId;
     }
 
     public String getId()
     {
         return "patient:" + patientId;
+    }
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getPassword() {
