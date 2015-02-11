@@ -1,15 +1,10 @@
 package API.Testing;
 
 import API.DummyAPIProvider;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.restlet.data.MediaType;
-import org.restlet.engine.header.ContentType;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
