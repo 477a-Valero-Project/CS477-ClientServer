@@ -3,6 +3,7 @@ package API.RecieveData;
 import API.OAuthProtectedResource;
 import API.Status;
 import Logic.Database.Database;
+import Logic.Database.Users;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
@@ -43,6 +44,7 @@ public class DoctorWeb extends OAuthProtectedResource {
         }
         builder.append("status", "good");
         builder.append("doctorid", String.valueOf(Database.makeDoctor(map.get("password"))));
+        Users.init();
         return builder.build().toString();
     }
 }

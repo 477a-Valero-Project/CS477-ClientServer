@@ -55,6 +55,7 @@ public class ReceiveData extends OAuthProtectedResource {
                 if(!map.containsKey("filename") || !map.containsKey("patientid"))
                 {
                     stats.append("status", "bad");
+                    stats.append("extra", "missing stuff");
                     return stats.build().toString();
                 }
                 String fileName = "J:\\temp\\" + map.get("filename");
@@ -107,11 +108,13 @@ public class ReceiveData extends OAuthProtectedResource {
                     return stats.build().toString();
                 } else {
                     stats.append("status", "bad");
+                    stats.append("extra", "file not found");
                     return stats.build().toString();
                 }
             }
         } else {
             stats.append("status", "bad");
+            stats.append("extra", "entity missing?");
             return stats.build().toString();
         }
         //should not reach here

@@ -9,7 +9,7 @@ import java.util.List;
 public class Users {
     private static Hashtable<String, String> table;
 
-    public static void init()
+    public static synchronized void init()
     {
         table = new Hashtable<>();
         List[] list = Database.getUsers();
@@ -40,5 +40,10 @@ public class Users {
             init();
         }
         return table.get(id);
+    }
+
+    public static void main(String args[])
+    {
+        System.out.println(getPassword("doctor:1"));
     }
 }

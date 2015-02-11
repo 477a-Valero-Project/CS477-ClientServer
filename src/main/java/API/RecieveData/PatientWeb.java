@@ -54,6 +54,7 @@ public class PatientWeb extends OAuthProtectedResource {
         builder.append("status", "good");
         builder.append("patientid", String.valueOf(Database.makePatient(map.get("password"),
                 Integer.valueOf(map.get("doctorid")))));
+        Users.init();
         return builder.build().toString();
     }
 }
