@@ -1,6 +1,7 @@
 package API.Testing;
 
 import API.DummyAPIProvider;
+import Logic.Database.User;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -20,16 +21,12 @@ public class Client {
     public static void main(String args[]) {
         int doctor = makeDoctor();
         System.out.println(doctor);
-        int patient = makePatient(doctor);
-        System.out.println(patient);
-        int done = makeRecord(doctor, patient);
-        System.out.println(done);
     }
 
     public static int makeRecord(int id1, int id2)
     {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
-                .apiKey("apples").apiSecret("test")
+                .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
         OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/receive/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
@@ -65,7 +62,7 @@ public class Client {
     public static int makePatient(int id)
     {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
-                .apiKey("apples").apiSecret("test")
+                .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
         OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/patient/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
@@ -95,7 +92,7 @@ public class Client {
         Response response = request.send();
         System.out.println(response.getBody());
         try {
-            return new JSONObject(response.getBody()).getInt("doctorid");
+            return new JSONObject(response.getBody()).getInt("id");
         }
         catch(Exception e)
         {

@@ -1,6 +1,5 @@
 package Logic.Database;
 
-import Logic.Resources.LiquibaseManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 

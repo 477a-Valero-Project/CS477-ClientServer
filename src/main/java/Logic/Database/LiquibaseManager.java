@@ -1,4 +1,4 @@
-package Logic.Resources;
+package Logic.Database;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -21,11 +21,7 @@ public class LiquibaseManager {
     private String liquibseDirectory;
 
     public LiquibaseManager() {
-        this.liquibseDirectory = "liquibase/db.master.xml";
-    }
-
-    public LiquibaseManager(String liquibseDirectory) {
-        this.liquibseDirectory = liquibseDirectory;
+        this.liquibseDirectory = "liquibase\\db.master.xml";
     }
 
     public void update(Connection connection) {

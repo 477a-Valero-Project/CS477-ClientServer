@@ -22,6 +22,10 @@ public class Users {
 
     public static synchronized void addUser(int id, String password)
     {
+        if(table == null)
+        {
+            init();
+        }
         table.put(id, password);
     }
 

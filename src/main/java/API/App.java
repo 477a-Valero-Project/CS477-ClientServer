@@ -17,8 +17,8 @@ public class App extends ServerResource {
         Component component = new Component();
         Server server = component.getServers().add(Protocol.HTTP, 8182);
         server.getContext().getParameters().add("useForwardedForHeader", "true");
-        ConfigurationManager.init();
         Database.init();
+        ConfigurationManager.init();
         component.getDefaultHost().attach(new ApiRouting());
         component.start();
     }
