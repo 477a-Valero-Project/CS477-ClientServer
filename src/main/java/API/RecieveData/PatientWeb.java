@@ -14,6 +14,7 @@ import java.util.Random;
 /**
  * Created by Martin on 2/10/2015.
  */
+@Deprecated
 public class PatientWeb extends OAuthProtectedResource {
     public String getSecretKey(String id)
     {

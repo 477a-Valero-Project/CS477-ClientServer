@@ -23,6 +23,7 @@ import java.util.Map;
 /**
  * Created by Martin on 10/24/2014.
  */
+@Deprecated
 public class ReceiveData extends OAuthProtectedResource {
 
     public String getSecretKey(String id)

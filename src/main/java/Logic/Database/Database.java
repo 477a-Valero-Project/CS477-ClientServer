@@ -1,5 +1,6 @@
 package Logic.Database;
 
+import Logic.Resources.LiquibaseManager;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -17,6 +18,8 @@ public class Database {
      */
     public static void init()
     {
+        LiquibaseManager manager = new LiquibaseManager();
+        manager.update(manager.getConnection());
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -33,6 +36,28 @@ public class Database {
                 }
             }
         });
+    }
+
+    static synchronized public Group getGroupById(int id)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List list = session.createQuery("FROM Group g WHERE g.id=" + id).list();
+        tx.commit();
+        if(list.size() == 0)
+            return null;
+        return (Group)list.get(0);
+    }
+
+    static synchronized public Group getGroupByName(String name)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List list = session.createQuery("FROM Group g WHERE g.name='" + name + "'").list();
+        tx.commit();
+        if(list.size() == 0)
+            return null;
+        return (Group)list.get(0);
     }
 
     /**
@@ -127,6 +152,7 @@ public class Database {
         return (Record)list.get(0);
     }
 
+    @Deprecated
     static synchronized public int makeDoctor(String password) {
         Doctor d = new Doctor(password);
         Session session = ConfigurationManager.getSessionFactory().openSession();
@@ -136,6 +162,96 @@ public class Database {
         return d.getDoctorId();
     }
 
+    static synchronized public User makeDefaultDoctor(String password) {
+        User u = new User(password);
+        u.setOwner(-1);
+        u.setRole(Role.BASIC_DOCTOR);
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(u);
+        tx.commit();
+        return u;
+    }
+
+    static synchronized public User makeDefaultPatient(User user) {
+        User u = new User();
+        u.setOwner(user.getId());
+        u.setRole(Role.PATIENT);
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(u);
+        tx.commit();
+        return u;
+    }
+
+    static synchronized public User getUserById(int id)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        List list = session.createQuery("FROM User u WHERE u.id = " + id).list();
+        tx.commit();
+        if(list.size() == 0)
+            return null;
+        return (User) list.get(0);
+    }
+
+    static synchronized public void saveUser(User user)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(user);
+        tx.commit();
+    }
+
+    /**
+     * Takes in a user and attempts to also update the groups of any users that this
+     * user owns.
+     * @param user
+     * @param groupId
+     */
+    static synchronized public void updateUserGroup(User user, int groupId) {
+        user.setGroupId(groupId);
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(user);
+        List l = session.createQuery("From User u WHERE u.owner=" + user.getId()).list();
+        for(Object o : l)
+        {
+            User temp = (User)o;
+            temp.setGroupId(groupId);
+            session.save(temp);
+        }
+        tx.commit();
+    }
+
+    static synchronized public String getUsersByOwner(User user)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.save(user);
+        List l = session.createQuery("From User u WHERE u.owner=" + user.getId()).list();
+        StringBuilder build = new StringBuilder();
+        build.append("[");
+        for(Object o : l)
+        {
+            User temp = (User)o;
+            build.append(user.getJSON());
+        }
+        build.append("]");
+        tx.commit();
+        return build.toString();
+    }
+
+    private static void addAction(StringBuilder ret, String action)
+    {
+        if(ret.length() > 1)
+        {
+            ret.append(",");
+        }
+        ret.append(action);
+    }
+
+    @Deprecated
     static synchronized public int makePatient(String password, int doctorId) {
         Patient d = new Patient(password, doctorId);
         Session session = ConfigurationManager.getSessionFactory().openSession();
@@ -145,6 +261,7 @@ public class Database {
         return d.getPatientId();
     }
 
+    @Deprecated
     static synchronized public Doctor getDoctor(int id) {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -155,6 +272,7 @@ public class Database {
         return (Doctor) list.get(0);
     }
 
+    @Deprecated
     static synchronized public Patient getPatient(int id) {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
@@ -170,12 +288,10 @@ public class Database {
      *
      * @return should be an array of size 2 with username and password.
      */
-    static synchronized public List[] getUsers() {
-        List[] ret = new List[2];
+    static synchronized public List getUsers() {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        ret[0] = session.createQuery("FROM Doctor").list();
-        ret[1] = session.createQuery("FROM Patient").list();
+        List ret = session.createQuery("FROM User").list();
         tx.commit();
         return ret;
     }

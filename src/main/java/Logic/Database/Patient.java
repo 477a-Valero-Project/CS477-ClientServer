@@ -3,6 +3,7 @@ package Logic.Database;
 /**
  * Created by Martin on 2/9/2015.
  */
+@Deprecated
 public class Patient implements AuthenticationModule {
     private String key;
     private int patientId;
@@ -16,9 +17,9 @@ public class Patient implements AuthenticationModule {
         doctorId = nDoctorId;
     }
 
-    public String getId()
+    public int getId()
     {
-        return "patient:" + patientId;
+        return patientId;
     }
 
     public int getDoctorId() {

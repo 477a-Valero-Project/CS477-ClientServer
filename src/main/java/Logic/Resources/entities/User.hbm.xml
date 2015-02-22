@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="Logic.Database">
+    <class name="User" table="Users">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="password" column="password" type="string"></property>
+        <property name="name" column="name" type="string"></property>
+        <property name="override" column="override" type="string"></property>
+        <property name="role" column="role">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">Logic.Database.Role</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="groupId" column="groupId" type="int" not-null="false"></property>
+        <property name="owner" column="owner" type="int" not-null="false"></property>
+    </class>
+</hibernate-mapping>

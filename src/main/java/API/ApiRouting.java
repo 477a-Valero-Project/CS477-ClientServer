@@ -15,9 +15,8 @@ public class ApiRouting extends Application {
     public synchronized Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
-        router.attach("/receive/", ReceiveData.class);
+        router.attach("/action/", ActionWeb.class);
         router.attach("/doctor/", DoctorWeb.class);
-        router.attach("/patient/", PatientWeb.class);
 
         return router;
     }

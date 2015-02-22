@@ -1,16 +1,19 @@
 package Logic.Database;
 
+import java.util.Vector;
+
 /**
  * Created by Martin on 2/9/2015.
  */
+@Deprecated
 public class Doctor implements AuthenticationModule {
     private String key;
     private int doctorId;
     private String password;
 
-    public String getId()
+    public int getId()
     {
-        return "doctor:" + doctorId;
+        return doctorId;
     }
 
     public String getKey() {
@@ -53,4 +56,5 @@ public class Doctor implements AuthenticationModule {
     {
         return "Doctor: " + doctorId + " password: " + password;
     }
+
 }

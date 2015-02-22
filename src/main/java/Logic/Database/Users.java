@@ -7,23 +7,25 @@ import java.util.List;
  * Created by Martin on 2/10/2015.
  */
 public class Users {
-    private static Hashtable<String, String> table;
+    private static Hashtable<Integer, String> table;
 
     public static synchronized void init()
     {
         table = new Hashtable<>();
-        List[] list = Database.getUsers();
-        for(List l : list)
+        List list = Database.getUsers();
+        for(Object o : list)
         {
-            for(Object o : l)
-            {
-                AuthenticationModule a = (AuthenticationModule)o;
-                table.put(a.getId(), a.getPassword());
-            }
+            AuthenticationModule a = (AuthenticationModule)o;
+            table.put(a.getId(), a.getPassword());
         }
     }
 
-    public static boolean validate(String id, String password)
+    public static synchronized void addUser(int id, String password)
+    {
+        table.put(id, password);
+    }
+
+    public static boolean validate(int id, String password)
     {
         if(table == null)
         {

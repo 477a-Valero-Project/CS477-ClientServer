@@ -33,37 +33,52 @@
 
     </changeSet>
     <changeSet id="0.0.2" author="Martin Borstad">
-    <createTable tableName="Doctors">
-        <column name="doctorId" type="int">
+    <createTable tableName="Users">
+        <column name="id" type="int">
             <constraints primaryKey="true" nullable="false"/>
         </column>
-        <column name="password" type="varchar(255)">
+        <column name="password" type="varchar(512)">
             <constraints nullable="true"/>
+        </column>
+        <column name="name" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="override" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="role" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="groupId" type="int">
+            <constraints primaryKey="false" nullable="true"/>
+        </column>
+        <column name="owner" type="int">
+            <constraints primaryKey="false" nullable="true"/>
         </column>
     </createTable>
     <addAutoIncrement
-            tableName="Doctors"
+            tableName="Users"
             columnDataType="int"
-            columnName="doctorId"
+            columnName="id"
             incrementBy="1"
             ></addAutoIncrement>
-    <createTable tableName="Patients">
-        <column name="patientId" type="int">
-            <constraints primaryKey="true" nullable="false"/>
-        </column>
-        <column name="doctorId" type="int">
-            <constraints primaryKey="true" nullable="false"/>
-        </column>
-        <column name="password" type="varchar(255)">
-            <constraints nullable="true"/>
-        </column>
-    </createTable>
-    <addAutoIncrement
-            tableName="Patients"
-            columnDataType="int"
-            columnName="patientId"
-            incrementBy="1"
-            ></addAutoIncrement>
+        <createTable tableName="Groups">
+            <column name="id" type="int">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="joinCode" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addAutoIncrement
+                tableName="Groups"
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                ></addAutoIncrement>
 
     </changeSet>
     <changeSet id="0.0.3" author="Martin Borstad">

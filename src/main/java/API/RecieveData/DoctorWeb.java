@@ -3,6 +3,7 @@ package API.RecieveData;
 import API.OAuthProtectedResource;
 import API.Status;
 import Logic.Database.Database;
+import Logic.Database.User;
 import Logic.Database.Users;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 /**
  * Created by Martin on 2/10/2015.
+ * Makes the doctor with basic permission.
  */
 public class DoctorWeb extends OAuthProtectedResource {
     public String getSecretKey(String id)
@@ -43,8 +45,9 @@ public class DoctorWeb extends OAuthProtectedResource {
             return builder.build().toString();
         }
         builder.append("status", "good");
-        builder.append("doctorid", String.valueOf(Database.makeDoctor(map.get("password"))));
-        Users.init();
+        User u = Database.makeDefaultDoctor(User.MD5(map.get("password")));
+        builder.append("id", String.valueOf(u.getId()));
+        Users.addUser(u.getId(), u.getPassword());
         return builder.build().toString();
     }
 }

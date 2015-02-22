@@ -5,5 +5,5 @@ package Logic.Database;
  */
 public interface AuthenticationModule {
     public String getPassword();
-    public String getId();
+    public int getId();
 }

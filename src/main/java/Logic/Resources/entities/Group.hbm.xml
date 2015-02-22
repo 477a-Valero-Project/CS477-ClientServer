@@ -4,11 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="Logic.Database">
-    <class name="Patient" table="Patients">
-        <id name="patientId" column="patientId">
+    <class name="Group" table="Groups">
+        <id name="id" column="id">
             <generator class="native"/>
         </id>
-        <property name="doctorId" column="doctorId" type="int" not-null="true"></property>
-        <property name="password" column="password" type="string"></property>
+        <property name="name" column="name" type="string"></property>
+        <property name="joinCode" column="joinCode" type="string"></property>
     </class>
 </hibernate-mapping>
