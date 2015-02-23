@@ -21,6 +21,10 @@ public class Client {
     public static void main(String args[]) {
         int doctor = makeDoctor();
         System.out.println(doctor);
+        int patient = makePatient(doctor);
+        System.out.println(patient);
+        int r = makeRecord(doctor, patient);
+        System.out.println(r);
     }
 
     public static int makeRecord(int id1, int id2)
@@ -28,12 +32,11 @@ public class Client {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/receive/");
+        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/action/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
-        request.addQuerystringParameter("doctorid", String.valueOf(id1));
         request.addQuerystringParameter("patientid", String.valueOf(id2));
-        request.addQuerystringParameter("filename", "123");
-        request.addQuerystringParameter("ID", "doctor:" + id1);
+        request.addQuerystringParameter("filename", "123.txt");
+        request.addQuerystringParameter("ID", String.valueOf(id1));
         MultipartEntityBuilder build = MultipartEntityBuilder.create();
         build.addBinaryBody("fileToUpload", new File("J:/temp/file.txt"));
         HttpEntity entity = build.build();
@@ -64,15 +67,14 @@ public class Client {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/patient/");
+        OAuthRequest request = new OAuthRequest(Verb.GET, "http://127.0.0.1:8182/action/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
-        request.addQuerystringParameter("password", "test");
-        request.addQuerystringParameter("doctorid", String.valueOf(id));
-        request.addQuerystringParameter("ID", "doctor:" + id);
+        request.addQuerystringParameter("action", "makePatient");
+        request.addQuerystringParameter("ID", String.valueOf(id));
         Response response = request.send();
         System.out.println(response.getBody());
         try {
-            return new JSONObject(response.getBody()).getInt("patientid");
+            return new JSONObject(response.getBody()).getInt("patientId");
         }
         catch(Exception e)
         {
@@ -83,7 +85,7 @@ public class Client {
     public static int makeDoctor()
     {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
-                .apiKey("apples").apiSecret("thisdoesnotmatterreallyithinkhopefullyalwayscanchangeitlater")
+                .apiKey("makingDoctor").apiSecret("thisdoesnotmatterreallyithinkhopefullyalwayscanchangeitlater")
                 .signatureType(SignatureType.QueryString).build();
         OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/doctor/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);

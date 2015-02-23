@@ -50,6 +50,8 @@ public class ActionWeb extends OAuthProtectedResource {
                 if (map.containsKey("name"))
                     u.setName(map.get("name"));
                 Database.saveUser(u);
+                Users.removeUser(u.getId());
+                Users.addUser(u.getId(), u.getPassword());
                 break;
             case "modifyPatient":
                 User other = Database.getUserById(Integer.valueOf(map.get("patient")));
@@ -60,6 +62,8 @@ public class ActionWeb extends OAuthProtectedResource {
                     if (map.containsKey("name"))
                         other.setName(map.get("name"));
                     Database.saveUser(other);
+                    Users.removeUser(other.getId());
+                    Users.addUser(other.getId(), other.getPassword());
                 } else {
                     builder.append("status", "bad");
                 }
@@ -124,7 +128,8 @@ public class ActionWeb extends OAuthProtectedResource {
             if (MediaType.MULTIPART_FORM_DATA.equals(entity.getMediaType(),
                     true)) {
                 Map<String, String> map = getQuery().getValuesMap();
-                if(!map.containsKey("filename") || !map.containsKey("patientid"))
+                User caller = Database.getUserById(Integer.valueOf(map.get("ID")));
+                if(!map.containsKey("filename") || (!map.containsKey("patientid") && caller.getRole() != Role.PATIENT))
                 {
                     stats.append("status", "bad");
                     stats.append("extra", "missing stuff");
@@ -165,7 +170,6 @@ public class ActionWeb extends OAuthProtectedResource {
                     if (fi.getFieldName().equals("fileToUpload")) {
                         found = true;
                         File file = new File(fileName);
-                        System.out.println(fi.getContentType());
                         fi.write(file);
                     }
                 }
@@ -174,9 +178,16 @@ public class ActionWeb extends OAuthProtectedResource {
                 // back to the client.
                 if (found) {
                     stats.append("status", "good");
-                    User u = Database.getUserById(Integer.valueOf(map.get("patientid")));
-                    int doctor = !map.containsKey("doctorid") ? u.getOwner() : Integer.valueOf(map.get("doctorid"));
-                    stats.append("fileid", String.valueOf(Database.makeRecord(doctor, u.getId(), fileName)));
+                    if(caller.getRole() != Role.PATIENT)
+                    {
+                        User u = Database.getUserById(Integer.valueOf(map.get("patientid")));
+                        stats.append("fileid", String.valueOf(Database.makeRecord(caller.getId(), u.getId(), fileName)));
+                    }
+                    else
+                    {
+                        stats.append("fileid", String.valueOf(Database.makeRecord(caller.getOwner(),
+                                caller.getId(), fileName)));
+                    }
                     return stats.build().toString();
                 } else {
                     stats.append("status", "bad");

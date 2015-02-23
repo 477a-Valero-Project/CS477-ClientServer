@@ -1,5 +1,6 @@
 package Logic.Database;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -52,7 +53,8 @@ public class Database {
     {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        List list = session.createQuery("FROM Group g WHERE g.name='" + name + "'").list();
+        Query q = session.createQuery("FROM Group g WHERE g.name=:name");
+        List list = q.setString("name", name).list();
         tx.commit();
         if(list.size() == 0)
             return null;
@@ -106,7 +108,8 @@ public class Database {
     {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        List l = session.createQuery("FROM OAuthCache a WHERE a.timestamp='" + timestamp + "'").list();
+        Query q = session.createQuery("FROM OAuthCache a WHERE a.timestamp=:timestamp");
+        List l = q.setString("timestamp", timestamp).list();
         for(Object o : l)
         {
             OAuthCache cached = (OAuthCache)o;
@@ -289,9 +292,7 @@ public class Database {
      */
     static synchronized public List getUsers() {
         Session session = ConfigurationManager.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
         List ret = session.createQuery("FROM User").list();
-        tx.commit();
         return ret;
     }
 

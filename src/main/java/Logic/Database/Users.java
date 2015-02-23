@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Martin on 2/10/2015.
  */
 public class Users {
-    private static Hashtable<Integer, String> table;
+    private static Hashtable<String, String> table;
 
     public static synchronized void init()
     {
@@ -16,17 +16,33 @@ public class Users {
         for(Object o : list)
         {
             AuthenticationModule a = (AuthenticationModule)o;
-            table.put(a.getId(), a.getPassword());
+            if(a.getPassword() != null)
+                table.put(String.valueOf(a.getId()), a.getPassword());
         }
     }
 
-    public static synchronized void addUser(int id, String password)
+    public static synchronized boolean addUser(int id, String password)
     {
         if(table == null)
         {
             init();
+            return true;
         }
-        table.put(id, password);
+        if(password == null)
+        {
+            return false;
+        }
+        return table.put(String.valueOf(id), password) == null;
+    }
+
+    public static synchronized void removeUser(int id)
+    {
+        if(table == null)
+        {
+            init();
+            return;
+        }
+        table.remove(id);
     }
 
     public static boolean validate(int id, String password)
@@ -39,13 +55,14 @@ public class Users {
         return str.equals(password);
     }
 
-    public static String getPassword(String id)
+    public static synchronized String getPassword(String id)
     {
         if(table == null)
         {
             init();
         }
-        return table.get(id);
+        String ret = table.get(id);
+        return ret == null || ret.isEmpty() ? null : ret;
     }
 
     public static void main(String args[])
