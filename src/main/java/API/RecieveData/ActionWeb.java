@@ -115,6 +115,29 @@ public class ActionWeb extends OAuthProtectedResource {
                     }
                 }
                 break;
+            case "listPatients":
+                builder.append("status", "good");
+                builder.append("return", Database.getUsersByOwner(u));
+                break;
+            case "getRecords":
+                if(u.getRole() == Role.PATIENT)
+                {
+                    builder.append("status", "good");
+                    builder.append("recordIds", Database.getRecordsJSON(u.getId()));
+                }
+                else
+                {
+                    User other3 = Database.getUserById(Integer.valueOf(map.get("patient")));
+                    if(!other3.canModify(u)) {
+                        builder.append("status", "bad");
+                    }
+                    else
+                    {
+                        builder.append("status", "good");
+                        builder.append("recordIds", Database.getRecordsJSON(other3.getId()));
+                    }
+                }
+                break;
         }
         return builder.build().toString();
     }

@@ -143,6 +143,22 @@ public class Database {
         return list;
     }
 
+    static synchronized public String getRecordsJSON(int patientID) {
+        List<Record> list = getRecords(patientID);
+        StringBuilder ret = new StringBuilder();
+        ret.append("[");
+        for(Record r : list)
+        {
+            if(ret.length() > 1)
+            {
+                ret.append(",");
+            }
+            ret.append(r.getRecordId());
+        }
+        ret.append("]");
+        return ret.toString();
+    }
+
     static synchronized public Record getRecord(int recordId)
     {
         Session session = ConfigurationManager.getSessionFactory().openSession();
@@ -152,16 +168,6 @@ public class Database {
         if(list.size() == 0)
             return null;
         return (Record)list.get(0);
-    }
-
-    @Deprecated
-    static synchronized public int makeDoctor(String password) {
-        Doctor d = new Doctor(password);
-        Session session = ConfigurationManager.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(d);
-        tx.commit();
-        return d.getDoctorId();
     }
 
     static synchronized public User makeDefaultDoctor(String password) {
@@ -237,7 +243,7 @@ public class Database {
         for(Object o : l)
         {
             User temp = (User)o;
-            build.append(user.getJSON());
+            build.append(temp.getJSON());
         }
         build.append("]");
         tx.commit();
@@ -253,37 +259,6 @@ public class Database {
         ret.append(action);
     }
 
-    @Deprecated
-    static synchronized public int makePatient(String password, int doctorId) {
-        Patient d = new Patient(password, doctorId);
-        Session session = ConfigurationManager.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        session.save(d);
-        tx.commit();
-        return d.getPatientId();
-    }
-
-    @Deprecated
-    static synchronized public Doctor getDoctor(int id) {
-        Session session = ConfigurationManager.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        List list = session.createQuery("FROM Doctor d WHERE d.doctorId = " + id).list();
-        tx.commit();
-        if(list.size() == 0)
-            return null;
-        return (Doctor) list.get(0);
-    }
-
-    @Deprecated
-    static synchronized public Patient getPatient(int id) {
-        Session session = ConfigurationManager.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        List list = session.createQuery("FROM Patient p WHERE p.patientId = " + id).list();
-        tx.commit();
-        if(list.size() == 0)
-            return null;
-        return (Patient) list.get(0);
-    }
 
     /**
      * Give back all ids and passwords.  This is to initialize the usermanger.
