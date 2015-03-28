@@ -27,12 +27,14 @@ public class Client {
         System.out.println(r);
     }
 
+    private static final String URL = "bbdlcs.usc.edu";
+
     public static int makeRecord(int id1, int id2)
     {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/action/");
+        OAuthRequest request = new OAuthRequest(Verb.POST, "http://" + URL + ":8182/action/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
         request.addQuerystringParameter("patientid", String.valueOf(id2));
         request.addQuerystringParameter("filename", "123.txt");
@@ -67,7 +69,7 @@ public class Client {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("apples").apiSecret(User.MD5("test"))
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://127.0.0.1:8182/action/");
+        OAuthRequest request = new OAuthRequest(Verb.GET, "http://" + URL + ":8182/action/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
         request.addQuerystringParameter("action", "makePatient");
         request.addQuerystringParameter("ID", String.valueOf(id));
@@ -87,7 +89,7 @@ public class Client {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
                 .apiKey("makingDoctor").apiSecret("thisdoesnotmatterreallyithinkhopefullyalwayscanchangeitlater")
                 .signatureType(SignatureType.QueryString).build();
-        OAuthRequest request = new OAuthRequest(Verb.POST, "http://127.0.0.1:8182/doctor/");
+        OAuthRequest request = new OAuthRequest(Verb.POST, "http://" + URL + ":8182/doctor/");
         service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
         request.addQuerystringParameter("password", "test");
         request.addQuerystringParameter("ID", "null");

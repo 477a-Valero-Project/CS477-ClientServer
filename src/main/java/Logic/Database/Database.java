@@ -143,6 +143,16 @@ public class Database {
         return list;
     }
 
+    static synchronized  public int getLastRecordNumber(int patientID)
+    {
+        List<Record> list = getRecords(patientID);
+        if(list == null || list.isEmpty())
+        {
+            return 0;
+        }
+        return list.get(list.size() - 1).getRecordId() + 1;
+    }
+
     static synchronized public String getRecordsJSON(int patientID) {
         List<Record> list = getRecords(patientID);
         StringBuilder ret = new StringBuilder();

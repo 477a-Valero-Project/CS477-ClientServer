@@ -152,13 +152,16 @@ public class ActionWeb extends OAuthProtectedResource {
                     true)) {
                 Map<String, String> map = getQuery().getValuesMap();
                 User caller = Database.getUserById(Integer.valueOf(map.get("ID")));
-                if(!map.containsKey("filename") || (!map.containsKey("patientid") && caller.getRole() != Role.PATIENT))
+                boolean isPatient = map.containsKey("patientid");
+                if(!isPatient && caller.getRole() != Role.PATIENT)
                 {
                     stats.append("status", "bad");
                     stats.append("extra", "missing stuff");
                     return stats.build().toString();
                 }
-                String fileName = "J:\\temp\\" + map.get("filename");
+                int patientId = isPatient ? caller.getId() : Integer.valueOf(map.get("patientid"));
+                int nextRecord = Database.getLastRecordNumber(patientId);
+                String fileName = "Number" + nextRecord + "Patient" + patientId;
 
                 // The Apache FileUpload project parses HTTP requests which
                 // conform to RFC 1867, "Form-based File Upload in HTML". That
