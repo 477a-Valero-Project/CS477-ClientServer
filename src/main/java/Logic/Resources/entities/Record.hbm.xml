@@ -12,6 +12,26 @@
     <property name="doctorId" column="doctorId" type="int" not-null="false"></property>
     <property name="filePathRaw" column="filePathRaw" type="string"></property>
     <property name="filePathProcess" column="filePathProcess" type="string"></property>
-
+    <property name="date" column="date" type="string"></property>
+    <property name="time" column="time" type="string"></property>
+    <property name="subjectType" column="subjectType" type="string"></property>
+    <property name="conditionOfTrial" column="conditionOfTrial" type="string"></property>
+    <property name="investigator" column="investigator" type="string"></property>
+    <property name="location" column="location" type="string"></property>
+    <property name="softwareVersion" column="softwareVersion" type="string"></property>
+    <property name="calibrationFileName" column="calibrationFileName" type="string"></property>
+    <property name="samplingRate" column="samplingRate" type="string"></property>
+    <property name="filterSettings" column="filterSettings" type="string"></property>
+    <property name="roomTemperature" column="roomTemperature" type="string"></property>
+    <property name="limb" column="limb" type="string"></property>
+    <property name="side" column="side" type="string"></property>
+    <property name="limbState" column="limbState" type="string"></property>
+    <property name="comments" column="comments" type="string"></property>
+    <property name="extra1" column="extra1" type="string"></property>
+    <property name="extra2" column="extra2" type="string"></property>
+    <property name="extra3" column="extra3" type="string"></property>
+    <property name="notes1" column="notes1" type="string"></property>
+    <property name="notes2" column="notes2" type="string"></property>
+    <property name="notes3" column="notes3" type="string"></property>
 </class>
 </hibernate-mapping>

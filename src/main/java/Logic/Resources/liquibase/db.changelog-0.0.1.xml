@@ -23,6 +23,73 @@
             <column name="filePathProcess" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
+            <column name="date" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="time" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="subjectType" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="conditionOfTrial" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="investigator" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="location" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="softwareVersion" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="calibrationFileName" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="samplingRate" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="filterSettings" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="roomTemperature" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="limb" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="side" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="limbState" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="comments" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="extra1" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="extra2" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="extra3" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="notes1" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="notes2" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="notes3" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+
+
+
         </createTable>
         <addAutoIncrement
                 tableName="Records"
@@ -43,7 +110,25 @@
         <column name="name" type="varchar(255)">
             <constraints nullable="true"/>
         </column>
+        <column name="username" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
         <column name="override" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="diagnosis" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="irb" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="consentLocation" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="consentInvestigator" type="varchar(255)">
+            <constraints nullable="true"/>
+        </column>
+        <column name="study" type="varchar(255)">
             <constraints nullable="true"/>
         </column>
         <column name="role" type="varchar(255)">

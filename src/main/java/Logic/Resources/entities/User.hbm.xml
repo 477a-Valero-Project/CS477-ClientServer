@@ -10,6 +10,12 @@
         </id>
         <property name="password" column="password" type="string"></property>
         <property name="name" column="name" type="string"></property>
+        <property name="username" column="username" type="string"></property>
+        <property name="diagnosis" column="diagnosis" type="string"></property>
+        <property name="irb" column="irb" type="string"></property>
+        <property name="consentLocation" column="consentLocation" type="string"></property>
+        <property name="consentInvestigator" column="consentInvestigator" type="string"></property>
+        <property name="study" column="study" type="string"></property>
         <property name="override" column="override" type="string"></property>
         <property name="role" column="role">
             <type name="org.hibernate.type.EnumType">

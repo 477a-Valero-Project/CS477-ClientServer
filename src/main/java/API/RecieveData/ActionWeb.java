@@ -45,10 +45,12 @@ public class ActionWeb extends OAuthProtectedResource {
                 break;
             case "modifySelf":
                 builder.append("status", "good");
-                if (map.containsKey("password"))
-                    u.setPassword(User.MD5(map.get("password")));
-                if (map.containsKey("name"))
-                    u.setName(map.get("name"));
+                Iterator it = map.entrySet().iterator();
+                while(it.hasNext())
+                {
+                    Map.Entry entry = (Map.Entry)it.next();
+                    User.setField(u, entry.getKey().toString(), entry.getValue().toString());
+                }
                 Database.saveUser(u);
                 Users.removeUser(u.getId());
                 Users.addUser(u.getId(), u.getPassword());
@@ -57,10 +59,12 @@ public class ActionWeb extends OAuthProtectedResource {
                 User other = Database.getUserById(Integer.valueOf(map.get("patient")));
                 if (other.canModify(u)) {
                     builder.append("status", "good");
-                    if (map.containsKey("password"))
-                        other.setPassword(User.MD5(map.get("password")));
-                    if (map.containsKey("name"))
-                        other.setName(map.get("name"));
+                    it = map.entrySet().iterator();
+                    while(it.hasNext())
+                    {
+                        Map.Entry entry = (Map.Entry)it.next();
+                        User.setField(other, entry.getKey().toString(), entry.getValue().toString());
+                    }
                     Database.saveUser(other);
                     Users.removeUser(other.getId());
                     Users.addUser(other.getId(), other.getPassword());
@@ -112,6 +116,52 @@ public class ActionWeb extends OAuthProtectedResource {
                     else
                     {
                         return new FileRepresentation(r.getFilePathProcess(), MediaType.MULTIPART_FORM_DATA);
+                    }
+                }
+                break;
+            case "modifyRecord":
+                if (!map.containsKey("recordId"))
+                {
+                    builder.append("status", "bad");
+                }
+                else
+                {
+                    Record r = Database.getRecord(Integer.valueOf(map.get("recordId")));
+                    User other2 = Database.getUserById(r.getPatientId());
+                    if(!other2.canModify(u))
+                    {
+                        builder.append("status", "bad");
+                    }
+                    else
+                    {
+                        builder.append("status", "good");
+                        it = map.entrySet().iterator();
+                        while(it.hasNext())
+                        {
+                            Map.Entry entry = (Map.Entry)it.next();
+                            Record.setField(r, entry.getKey().toString(), entry.getValue().toString());
+                        }
+                        Database.saveRecord(r);
+                    }
+                }
+                break;
+            case "getRecord":
+                if (!map.containsKey("recordId"))
+                {
+                    builder.append("status", "bad");
+                }
+                else
+                {
+                    Record r = Database.getRecord(Integer.valueOf(map.get("recordId")));
+                    User other2 = Database.getUserById(r.getPatientId());
+                    if(!other2.canModify(u))
+                    {
+                        builder.append("status", "bad");
+                    }
+                    else
+                    {
+                        builder.append("status", "good");
+                        builder.append("record", r.toString());
                     }
                 }
                 break;
@@ -207,12 +257,28 @@ public class ActionWeb extends OAuthProtectedResource {
                     if(caller.getRole() != Role.PATIENT)
                     {
                         User u = Database.getUserById(Integer.valueOf(map.get("patientid")));
-                        stats.append("fileid", String.valueOf(Database.makeRecord(caller.getId(), u.getId(), fileName)));
+                        Record r = Database.makeRecord(caller.getId(), u.getId(), fileName);
+                        Iterator it = map.entrySet().iterator();
+                        while(it.hasNext())
+                        {
+                            Map.Entry entry = (Map.Entry)it.next();
+                            Record.setField(r, entry.getKey().toString(), entry.getValue().toString());
+                        }
+                        Database.saveRecord(r);
+                        stats.append("fileid", String.valueOf(r.getRecordId()));
                     }
                     else
                     {
-                        stats.append("fileid", String.valueOf(Database.makeRecord(caller.getOwner(),
-                                caller.getId(), fileName)));
+                        Record r = Database.makeRecord(caller.getOwner(),
+                                caller.getId(), fileName);
+                        stats.append("fileid", String.valueOf(r.getRecordId()));
+                        Iterator it = map.entrySet().iterator();
+                        while(it.hasNext())
+                        {
+                            Map.Entry entry = (Map.Entry)it.next();
+                            Record.setField(r, entry.getKey().toString(), entry.getValue().toString());
+                        }
+                        Database.saveRecord(r);
                     }
                     return stats.build().toString();
                 } else {

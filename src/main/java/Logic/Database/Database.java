@@ -44,6 +44,7 @@ public class Database {
         Transaction tx = session.beginTransaction();
         List list = session.createQuery("FROM Group g WHERE g.id=" + id).list();
         tx.commit();
+        session.close();
         if(list.size() == 0)
             return null;
         return (Group)list.get(0);
@@ -56,6 +57,7 @@ public class Database {
         Query q = session.createQuery("FROM Group g WHERE g.name=:name");
         List list = q.setString("name", name).list();
         tx.commit();
+        session.close();
         if(list.size() == 0)
             return null;
         return (Group)list.get(0);
@@ -79,6 +81,7 @@ public class Database {
         r.setFilePathProcess(location);
         session.update(r);
         tx.commit();
+        session.close();
         return true;
     }
 
@@ -102,6 +105,7 @@ public class Database {
             }
         }
         tx.commit();
+        session.close();
     }
 
     static synchronized public boolean tryPutOAuth(String timestamp, String nonce, String publicKey)
@@ -121,17 +125,19 @@ public class Database {
         OAuthCache o = new OAuthCache(timestamp, nonce, publicKey);
         session.save(o);
         tx.commit();
+        session.close();
         return false;
     }
 
     //Add file to database
-    static synchronized public int makeRecord(int doctorID, int patientID, String location) {
+    static synchronized public Record makeRecord(int doctorID, int patientID, String location) {
         Record r = new Record(doctorID, patientID, location, "not processed");
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         session.save(r);
         tx.commit();
-        return r.getRecordId();
+        session.close();
+        return r;
     }
 
     //get files from database
@@ -140,6 +146,7 @@ public class Database {
         Transaction tx = session.beginTransaction();
         List list = session.createQuery("FROM Record r WHERE r.patientId=" + patientID).list();
         tx.commit();
+        session.close();
         return list;
     }
 
@@ -177,6 +184,7 @@ public class Database {
         tx.commit();
         if(list.size() == 0)
             return null;
+        session.close();
         return (Record)list.get(0);
     }
 
@@ -188,6 +196,7 @@ public class Database {
         Transaction tx = session.beginTransaction();
         session.save(u);
         tx.commit();
+        session.close();
         return u;
     }
 
@@ -199,6 +208,7 @@ public class Database {
         Transaction tx = session.beginTransaction();
         session.save(u);
         tx.commit();
+        session.close();
         return u;
     }
 
@@ -208,6 +218,7 @@ public class Database {
         Transaction tx = session.beginTransaction();
         List list = session.createQuery("FROM User u WHERE u.id = " + id).list();
         tx.commit();
+        session.close();
         if(list.size() == 0)
             return null;
         return (User) list.get(0);
@@ -217,8 +228,18 @@ public class Database {
     {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.save(user);
+        session.update(user);
         tx.commit();
+        session.close();
+    }
+
+    static synchronized public void saveRecord(Record record)
+    {
+        Session session = ConfigurationManager.getSessionFactory().openSession();
+        Transaction tx = session.beginTransaction();
+        session.update(record);
+        tx.commit();
+        session.close();
     }
 
     /**
@@ -231,7 +252,7 @@ public class Database {
         user.setGroupId(groupId);
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.save(user);
+        session.update(user);
         List l = session.createQuery("From User u WHERE u.owner=" + user.getId()).list();
         for(Object o : l)
         {
@@ -240,13 +261,14 @@ public class Database {
             session.save(temp);
         }
         tx.commit();
+        session.close();
     }
 
     static synchronized public String getUsersByOwner(User user)
     {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
-        session.save(user);
+        session.update(user);
         List l = session.createQuery("From User u WHERE u.owner=" + user.getId()).list();
         StringBuilder build = new StringBuilder();
         build.append("[");
@@ -257,6 +279,7 @@ public class Database {
         }
         build.append("]");
         tx.commit();
+        session.close();
         return build.toString();
     }
 
@@ -278,6 +301,7 @@ public class Database {
     static synchronized public List getUsers() {
         Session session = ConfigurationManager.getSessionFactory().openSession();
         List ret = session.createQuery("FROM User").list();
+        session.close();
         return ret;
     }
 

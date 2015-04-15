@@ -25,10 +25,54 @@ public class Client {
         System.out.println(patient);
         int r = makeRecord(doctor, patient);
         System.out.println(r);
+        System.out.println("before modify");
+        System.out.println(getRecord(patient, doctor, r));
+        System.out.println("after modify");
+        System.out.println(modifyRecord(patient, doctor, r, "softwareVersion", "peanuts"));
+        System.out.println(getRecord(patient, doctor, r));
     }
 
-    private static final String URL = "bbdlcs.usc.edu";
+    private static final String URL = "127.0.0.1";
 
+    public static String modifyRecord(int id1, int id2, int r, String field, String name)
+    {
+        OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
+                .apiKey("apples").apiSecret(User.MD5("test"))
+                .signatureType(SignatureType.QueryString).build();
+        OAuthRequest request = new OAuthRequest(Verb.GET, "http://" + URL + ":8182/action/");
+        service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
+        request.addQuerystringParameter("action", "modifyRecord");
+        request.addQuerystringParameter("patientId", String.valueOf(id1));
+        request.addQuerystringParameter("recordId", String.valueOf(r));
+        request.addQuerystringParameter("ID", String.valueOf(id2));
+        request.addQuerystringParameter(field, name);
+        Response response = request.send();
+        try {
+            return response.getBody();
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+    }
+
+    public static String getRecord(int id1, int id2, int r) {
+        OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
+                .apiKey("apples").apiSecret(User.MD5("test"))
+                .signatureType(SignatureType.QueryString).build();
+        OAuthRequest request = new OAuthRequest(Verb.GET, "http://" + URL + ":8182/action/");
+        service.signRequest(OAuthConstants.EMPTY_TOKEN, request);
+        request.addQuerystringParameter("action", "getRecord");
+        request.addQuerystringParameter("patientId", String.valueOf(id1));
+        request.addQuerystringParameter("recordId", String.valueOf(r));
+        request.addQuerystringParameter("ID", String.valueOf(id2));
+        Response response = request.send();
+        try {
+            return response.getBody();
+        } catch (Exception e) {
+            return null;
+        }
+    }
     public static int makeRecord(int id1, int id2)
     {
         OAuthService service = new ServiceBuilder().provider(DummyAPIProvider.class)
